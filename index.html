@@ -9,187 +9,410 @@
 <title>Control de Flauta</title>
 <link rel="manifest" href="manifest.json">
 <style>
-:root{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#172033;background:#f5f7fb}
-*{box-sizing:border-box} body{margin:0}
-header{background:#3157d5;color:white;padding:18px 18px 16px;position:sticky;top:0;z-index:5}
-h1{font-size:22px;margin:0 0 12px}.sub{opacity:.9;font-size:13px}
-main{max-width:900px;margin:auto;padding:16px}
-.card{background:white;border-radius:18px;padding:16px;margin-bottom:14px;box-shadow:0 2px 12px #0000000b}
-label{font-weight:600;font-size:14px;display:block;margin-bottom:7px}
-select,input,button{font:inherit} select,input{width:100%;padding:12px;border:1px solid #d8deeb;border-radius:12px;background:white}
-.tabs{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:14px}
-button{border:0;border-radius:12px;padding:11px 13px;font-weight:700;cursor:pointer}
-.tab{background:#e8ecf7;color:#33405a}.tab.active{background:#3157d5;color:#fff}
-.actions{display:flex;gap:8px;flex-wrap:wrap}.secondary{background:#e9edf6}.primary{background:#3157d5;color:white}
-.date-row{display:flex;gap:10px;align-items:end}.date-row>div{flex:1}
-.student{display:grid;grid-template-columns:1fr auto auto auto;gap:7px;align-items:center;padding:11px 0;border-bottom:1px solid #edf0f5}
-.student:last-child{border-bottom:0}.name{font-weight:600}
-.student-toggle{width:100%;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 15px;background:#eef1f7;color:#34405a;border-radius:13px;text-align:left}.student-toggle .name{font-size:16px}.student-toggle.on-yes{background:#d9f4e3;color:#13713b}.student-toggle.on-no{background:#fde0e0;color:#a51e1e}.student-toggle.on-abs{background:#e6e8ed;color:#555}
+:root{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#172033;background:#f4f6fb}
+*{box-sizing:border-box}
+body{margin:0;background:#f4f6fb}
+header{background:#3157d5;color:white;padding:18px 16px 14px}
+header h1{margin:0;font-size:21px}
+header p{margin:4px 0 0;opacity:.85;font-size:13px}
+.tabs{display:flex;gap:8px;background:white;padding:8px;border-bottom:1px solid #ddd}
+.tab{flex:1;border:0;background:#eef1f7;border-radius:10px;padding:11px 8px;font-weight:700;color:#4a5568}
+.tab.active{background:#3157d5;color:white}
+main{padding:14px;max-width:800px;margin:auto}
+.card{background:white;border-radius:16px;padding:16px;margin-bottom:14px;box-shadow:0 2px 10px #0000000d}
+label{display:block;font-size:13px;font-weight:700;margin-bottom:6px;color:#4a5568}
+select,input,button{font:inherit}
+select,input{width:100%;border:1px solid #ccd2df;border-radius:10px;padding:11px;background:white}
+.schedule-pill{margin:0 0 12px;padding:10px 12px;background:#eef1f7;color:#33405a;border-radius:12px;font-size:13px;font-weight:600;text-align:center}
+.students{display:flex;flex-direction:column;gap:8px}
+.student-toggle{width:100%;border:1px solid #d7dce7;border-radius:12px;padding:13px 12px;background:#fff;text-align:left;display:flex;align-items:center;justify-content:space-between;gap:10px}
+.student-toggle .name{font-size:15px;font-weight:600}
+.student-toggle .state{font-size:13px;font-weight:700;white-space:nowrap}
+.student-toggle.yes{background:#e7f7ed;border-color:#76c893;color:#176b35}
+.student-toggle.no{background:#fdeaea;border-color:#e58b8b;color:#a52222}
+.student-toggle.abs{background:#f0f1f3;border-color:#c4c7cc;color:#62666d}
 .empty{text-align:center;color:#697386;padding:28px 10px}
-.hidden{display:none!important}.pill{font-size:12px;background:#eef1f7;padding:5px 8px;border-radius:20px}
-.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.stat{background:#f4f6fa;border-radius:13px;padding:12px;text-align:center}.stat b{display:block;font-size:22px}
-@media(max-width:600px){.student{grid-template-columns:1fr auto auto auto}.student .name{font-size:14px}.mark{min-width:40px;font-size:12px;padding:9px 5px}}
+.actions{display:flex;gap:8px;margin-top:12px}
+.actions button{flex:1;border:0;border-radius:10px;padding:11px;font-weight:700}
+.primary{background:#3157d5;color:white}
+.secondary{background:#eef1f7;color:#33405a}
+.small{font-size:12px;color:#697386}
+.student-row{display:flex;gap:8px;margin-bottom:8px}
+.student-row input{flex:1}
+.danger{background:#fdeaea;color:#a52222;border:1px solid #efb2b2;border-radius:10px;padding:10px}
+.summary-row{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid #eee}
+.summary-row:last-child{border-bottom:0}
+.badge{border-radius:20px;padding:5px 9px;font-size:12px;font-weight:700}
+.badge.yes{background:#e7f7ed;color:#176b35}
+.badge.no{background:#fdeaea;color:#a52222}
+.badge.abs{background:#f0f1f3;color:#62666d}
+.hidden{display:none!important}
+@media(max-width:600px){
+main{padding:12px}
+.card{padding:14px}
+.student-toggle{padding:13px 12px}
+.student-toggle .name{font-size:15px}
+header{padding:16px 14px}
+.tabs{gap:6px}
+.tab{padding:10px 8px}
+}
 </style>
 </head>
 <body>
-<header><h1>ðµ Control de Flauta</h1><div class="sub">Registro diario de tus alumnos</div></header>
-<main>
-<div class="tabs">
+
+<header>
+<h1>🎵 Control de Flauta</h1>
+<p>Registro diario de tus alumnos</p>
+</header>
+
+<nav class="tabs">
 <button class="tab active" data-tab="registro">Registro</button>
 <button class="tab" data-tab="alumnos">Alumnos</button>
 <button class="tab" data-tab="resumen">Resumen</button>
-</div>
+</nav>
+
+<main>
 
 <section id="registro">
 <div class="card">
-<label>Clase</label><select id="classSelect"></select>
-<div class="date-row" style="margin-top:12px"><div><label>Fecha</label><input type="date" id="date"></div></div>
+<div id="nextClass" class="schedule-pill">Horario: comprobando…</div>
+
+<label>Clase</label>
+<select id="classSelect"></select>
+
+<label style="margin-top:12px">Fecha</label>
+<input id="dateInput" type="date">
+
+<div class="actions">
+<button class="primary" id="saveBtn">Guardar registro</button>
+<button class="secondary" id="clearBtn">Limpiar</button>
 </div>
+</div>
+
 <div class="card">
-<div id="studentList"></div>
+<div id="studentList" class="students"></div>
 </div>
 </section>
 
 <section id="alumnos" class="hidden">
 <div class="card">
-<h2 style="margin-top:0">Gestionar alumnos</h2>
-<p style="color:#697386">Puedes importar un CSV con las columnas <b>Clase, Alumno</b> o aÃ±adir alumnos manualmente.</p>
+<h2 style="margin-top:0">Alumnos</h2>
+<p class="small">Selecciona una clase y añade los nombres de sus alumnos.</p>
+
+<label>Clase</label>
+<select id="classSelectStudents"></select>
+
+<div id="studentsEditor" style="margin-top:14px"></div>
+
 <div class="actions">
-<button class="primary" id="importBtn">ð¥ Importar CSV</button>
-<button class="secondary" id="downloadTemplate">ð Plantilla CSV</button>
-<input type="file" id="fileInput" accept=".csv,text/csv" class="hidden">
+<button class="primary" id="addStudent">Añadir alumno</button>
+<button class="secondary" id="saveStudents">Guardar alumnos</button>
 </div>
-</div>
-<div class="card">
-<label>Clase</label><select id="manageClass"></select>
-<div class="actions" style="margin-top:10px"><input id="newStudent" placeholder="Nombre del alumno"><button class="primary" id="addStudent">AÃ±adir</button></div>
-<div id="manageList" style="margin-top:12px"></div>
 </div>
 </section>
 
 <section id="resumen" class="hidden">
-<div class="card"><label>Clase</label><select id="summaryClass"></select></div>
-<div class="card"><div class="stats"><div class="stat"><b id="daysCount">0</b>DÃ­as registrados</div><div class="stat"><b id="studentsCount">0</b>Alumnos</div><div class="stat"><b id="missingCount">0</b>Sin flauta</div></div></div>
-<div class="card"><div id="summaryList"></div></div>
-<div class="card"><button class="primary" id="exportBtn">ð¤ Exportar registros a CSV</button></div>
+<div class="card">
+<h2 style="margin-top:0">Resumen</h2>
+<label>Clase</label>
+<select id="summaryClass"></select>
+<div id="summaryContent" style="margin-top:12px"></div>
+</div>
 </section>
-</main>
-<script>
-const KEY="flauta-v1";
-const defaultData={classes:["1Âº ESO A","1Âº ESO B","1Âº ESO C","1Âº ESO D","2Âº ESO A","2Âº ESO B","2Âº ESO C","2Âº ESO D","4Âº ESO D"].map(name=>({name,students:[]})),records:{}};
-let data=JSON.parse(localStorage.getItem(KEY)||"null")||defaultData;
-const save=()=>localStorage.setItem(KEY,JSON.stringify(data));
-const today=()=>new Date().toISOString().slice(0,10);
-document.getElementById("date").value=today();
 
+</main>
+
+<script>
+const CLASS_NAMES=["1 A","1 B","1 C","1 D","2 A","2 B","2 C","2 D","4 D"];
+const OLD_NAMES=["1º ESO A","1º ESO B","1º ESO C","1º ESO D","2º ESO A","2º ESO B","2º ESO C","2º ESO D","4º ESO D"];
+
+const defaultData={
+classes:CLASS_NAMES.map(name=>({name,students:[]})),
+records:{}
+};
+
+const KEY="control-flauta-v1";
+
+let data=JSON.parse(localStorage.getItem(KEY)||"null")||defaultData;
+
+if(data.classes?.length===9){
+data.classes.forEach((c,i)=>{
+if(OLD_NAMES.includes(c.name)) c.name=CLASS_NAMES[i];
+});
+}
+
+const save=()=>localStorage.setItem(KEY,JSON.stringify(data));
+
+const today=()=>{
+const d=new Date();
+return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
+};
+
+const classSelect=document.getElementById("classSelect");
+const dateInput=document.getElementById("dateInput");
+const studentList=document.getElementById("studentList");
+
+dateInput.value=today();
+
+function populateClassSelects(){
+[classSelect,document.getElementById("classSelectStudents"),document.getElementById("summaryClass")].forEach(sel=>{
+sel.innerHTML="";
+data.classes.forEach((c,i)=>{
+const opt=document.createElement("option");
+opt.value=i;
+opt.textContent=c.name;
+sel.appendChild(opt);
+});
+});
+}
+
+function renderStudents(){
+const ci=Number(classSelect.value||0);
+const students=data.classes[ci]?.students||[];
+const date=dateInput.value;
+const rec=data.records[date]?.[ci]||{};
+
+studentList.innerHTML="";
+
+if(!students.length){
+studentList.innerHTML='<div class="empty">Aún no hay alumnos en esta clase. Ve a Alumnos para importarlos.</div>';
+return;
+}
+
+students.forEach((name,i)=>{
+const state=rec[i]||"";
+
+const btn=document.createElement("button");
+btn.className="student-toggle "+(state||"");
+btn.onclick=()=>toggleMark(i);
+
+let label="○ Sin registrar";
+if(state==="yes") label="🎵 Trae";
+if(state==="no") label="❌ No trae";
+if(state==="abs") label="— Ausente";
+
+btn.innerHTML=`<span class="name">${escapeHtml(name)}</span><span class="state">${label}</span>`;
+
+studentList.appendChild(btn);
+});
+}
+
+function escapeHtml(text){
+return String(text).replace(/[&<>"']/g,m=>({
+"&":"&amp;",
+"<":"&lt;",
+">":"&gt;",
+'"':"&quot;",
+"'":"&#039;"
+}[m]));
+}
+
+function toggleMark(i){
+const ci=Number(classSelect.value||0);
+const date=dateInput.value;
+
+if(!data.records[date]) data.records[date]={};
+if(!data.records[date][ci]) data.records[date][ci]={};
+
+const current=data.records[date][ci][i]||"";
+
+const next=current===""?"yes":
+current==="yes"?"no":
+current==="no"?"abs":"";
+
+data.records[date][ci][i]=next;
+save();
+renderStudents();
+}
+
+document.getElementById("saveBtn").onclick=()=>{
+save();
+alert("Registro guardado");
+};
+
+document.getElementById("clearBtn").onclick=()=>{
+const ci=Number(classSelect.value||0);
+const date=dateInput.value;
+
+if(data.records[date]?.[ci]){
+delete data.records[date][ci];
+save();
+}
+
+renderStudents();
+};
+
+classSelect.onchange=renderStudents;
+dateInput.onchange=renderStudents;
+
+function renderStudentsEditor(){
+const ci=Number(document.getElementById("classSelectStudents").value||0);
+const box=document.getElementById("studentsEditor");
+box.innerHTML="";
+
+data.classes[ci].students.forEach((name,i)=>{
+const row=document.createElement("div");
+row.className="student-row";
+
+const input=document.createElement("input");
+input.value=name;
+input.placeholder="Nombre del alumno";
+
+const del=document.createElement("button");
+del.className="danger";
+del.textContent="×";
+del.onclick=()=>{
+data.classes[ci].students.splice(i,1);
+renderStudentsEditor();
+};
+
+row.appendChild(input);
+row.appendChild(del);
+box.appendChild(row);
+});
+}
+
+document.getElementById("classSelectStudents").onchange=renderStudentsEditor;
+
+document.getElementById("addStudent").onclick=()=>{
+const ci=Number(document.getElementById("classSelectStudents").value||0);
+data.classes[ci].students.push("");
+renderStudentsEditor();
+};
+
+document.getElementById("saveStudents").onclick=()=>{
+const ci=Number(document.getElementById("classSelectStudents").value||0);
+const inputs=document.querySelectorAll("#studentsEditor input");
+data.classes[ci].students=[...inputs].map(x=>x.value.trim()).filter(Boolean);
+save();
+renderStudentsEditor();
+renderStudents();
+alert("Alumnos guardados");
+};
+
+document.getElementById("summaryClass").onchange=renderSummary;
+
+function renderSummary(){
+const ci=Number(document.getElementById("summaryClass").value||0);
+const box=document.getElementById("summaryContent");
+const students=data.classes[ci]?.students||[];
+
+let yes=0,no=0,abs=0,un=0;
+
+const date=dateInput.value;
+const rec=data.records[date]?.[ci]||{};
+
+students.forEach((_,i)=>{
+if(rec[i]==="yes")yes++;
+else if(rec[i]==="no")no++;
+else if(rec[i]==="abs")abs++;
+else un++;
+});
+
+box.innerHTML=`
+<div class="summary-row"><span>🎵 Trae</span><span class="badge yes">${yes}</span></div>
+<div class="summary-row"><span>❌ No trae</span><span class="badge no">${no}</span></div>
+<div class="summary-row"><span>— Ausente</span><span class="badge abs">${abs}</span></div>
+<div class="summary-row"><span>○ Sin registrar</span><span>${un}</span></div>
+`;
+}
+
+document.querySelectorAll(".tab").forEach(tab=>{
+tab.onclick=()=>{
+document.querySelectorAll(".tab").forEach(t=>t.classList.remove("active"));
+tab.classList.add("active");
+
+document.getElementById("registro").classList.toggle("hidden",tab.dataset.tab!=="registro");
+document.getElementById("alumnos").classList.toggle("hidden",tab.dataset.tab!=="alumnos");
+document.getElementById("resumen").classList.toggle("hidden",tab.dataset.tab!=="resumen");
+
+if(tab.dataset.tab==="alumnos") renderStudentsEditor();
+if(tab.dataset.tab==="resumen") renderSummary();
+};
+});
 
 const timetable={
-"1":["09:15-10:15|2Âº ESO D","10:15-11:15|1Âº ESO C","11:45-12:45|4Âº ESO D","13:45-14:45|1Âº ESO B"],
-"2":["09:15-10:15|1Âº ESO A","10:15-11:15|4Âº ESO D","12:45-13:45|2Âº ESO A","13:45-14:45|2Âº ESO C"],
-"3":["10:15-11:15|1Âº ESO D","11:45-12:45|2Âº ESO B","13:45-14:45|1Âº ESO C"],
-"4":["09:15-10:15|4Âº ESO D","10:15-11:15|1Âº ESO A","11:45-12:45|2Âº ESO D","12:45-13:45|2Âº ESO C","13:45-14:45|1Âº ESO B"],
-"5":["11:45-12:45|2Âº ESO B","12:45-13:45|2Âº ESO A","13:45-14:45|1Âº ESO D"]
+1:[
+["09:15","10:15","2 D"],
+["10:15","11:15","1 C"],
+["11:45","12:45","4 D"],
+["13:45","14:45","1 B"]
+],
+2:[
+["09:15","10:15","1 A"],
+["10:15","11:15","4 D"],
+["12:45","13:45","2 A"],
+["13:45","14:45","2 C"]
+],
+3:[
+["10:15","11:15","1 D"],
+["11:45","12:45","2 B"],
+["13:45","14:45","1 C"]
+],
+4:[
+["09:15","10:15","4 D"],
+["10:15","11:15","1 A"],
+["11:45","12:45","2 D"],
+["12:45","13:45","2 C"],
+["13:45","14:45","1 B"]
+],
+5:[
+["11:45","12:45","2 B"],
+["12:45","13:45","2 A"],
+["13:45","14:45","1 D"]
+]
 };
+
 function updateSchedule(){
- const now=new Date(), day=now.getDay(), mins=now.getHours()*60+now.getMinutes(), items=timetable[String(day)]||[];
- const current=items.find(x=>{const [a,b]=x.split("|")[0].split("-");const [ah,am]=a.split(":").map(Number),[bh,bm]=b.split(":").map(Number);return mins>=ah*60+am&&mins<bh*60+bm});
- const el=document.getElementById("nextClass");
- if(current){const [time,cls]=current.split("|");el.textContent=`Ahora: ${time} Â· ${cls}`; const i=data.classes.findIndex(c=>c.name===cls); if(i>=0) document.getElementById("classSelect").value=i;}
- else if(items.length){const upcoming=items.map(x=>{const [time,cls]=x.split("|"),[a]=time.split("-"),[h,m]=a.split(":").map(Number);return {time,cls,m:h*60+m}}).find(x=>x.m>mins); el.textContent=upcoming?`PrÃ³xima: ${upcoming.time} Â· ${upcoming.cls}`:"Sin mÃ¡s clases hoy";}
- else el.textContent="Sin clases programadas hoy";
+const el=document.getElementById("nextClass");
+if(!el)return;
+
+const now=new Date();
+const day=now.getDay();
+const list=timetable[day]||[];
+
+if(!list.length){
+el.textContent="Hoy no hay clases";
+return;
 }
 
-function populate(){
-  ["classSelect","manageClass","summaryClass"].forEach(id=>{
-    const s=document.getElementById(id), old=s.value;
-    s.innerHTML=data.classes.map((c,i)=>`<option value="${i}">${esc(c.name)}</option>`).join("");
-    if(old!=="" && data.classes[old]) s.value=old;
-  });
-  renderStudents(); renderManage(); renderSummary(); updateSchedule();
+const mins=now.getHours()*60+now.getMinutes();
+
+let current=null;
+let next=null;
+
+for(const item of list){
+const [sh,sm]=item[0].split(":").map(Number);
+const [eh,em]=item[1].split(":").map(Number);
+const start=sh*60+sm;
+const end=eh*60+em;
+
+if(mins>=start&&mins<end) current=item;
+else if(mins<start&&!next) next=item;
 }
-function esc(s){return String(s).replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]))}
-function key(){return `${document.getElementById("date").value}|${document.getElementById("classSelect").value}`}
-function renderStudents(){
- const ci=+document.getElementById("classSelect").value,c=data.classes[ci], r=data.records[key()]||{};
- const el=document.getElementById("studentList");
- if(!c.students.length){el.innerHTML='<div class="empty">AÃºn no hay alumnos en esta clase.<br>Ve a <b>Alumnos</b> para importarlos.</div>';return}
- el.innerHTML=c.students.map((n,i)=>{
-   const v=r[n]||"";
-   const label=v==="yes"?"ðµ Trae":v==="no"?"â No trae":v==="abs"?"â Ausente":"â Sin registrar";
-   const cls=v==="yes"?"on-yes":v==="no"?"on-no":v==="abs"?"on-abs":"";
-   return `<div class="student"><button class="student-toggle ${cls}" onclick="toggleMark(${i})"><span class="name">${esc(n)}</span><span>${label}</span></button></div>`
- }).join("");
+
+if(current){
+el.textContent=`Ahora: ${current[2]} · ${current[0]}–${current[1]}`;
+
+const idx=data.classes.findIndex(c=>c.name===current[2]);
+if(idx>=0&&classSelect.value!==String(idx)){
+classSelect.value=String(idx);
+renderStudents();
 }
-function toggleMark(i){
- const ci=+document.getElementById("classSelect").value,k=key(),n=data.classes[ci].students[i];
- const current=(data.records[k]||{})[n]||"";
- const next=current===""?"yes":current==="yes"?"no":current==="no"?"":"abs";
- if(next==="") { if(data.records[k]) delete data.records[k][n]; }
- else { data.records[k] ||= {}; data.records[k][n]=next; }
- save(); renderStudents(); renderSummary();
+}else if(next){
+el.textContent=`Próxima: ${next[2]} · ${next[0]}–${next[1]}`;
+}else{
+el.textContent="Clases de hoy terminadas";
 }
-function mark(i,v){
- const ci=+document.getElementById("classSelect").value,k=key();
- data.records[k] ||= {}; const n=data.classes[ci].students[i];
- data.records[k][n]=data.records[k][n]===v?"":v; save(); renderStudents(); renderSummary();
 }
-function renderManage(){
- const ci=+document.getElementById("manageClass").value,c=data.classes[ci];
- document.getElementById("manageList").innerHTML=c.students.length
- ? c.students.map((n,i)=>`<div class="student"><div class="name">${esc(n)}</div><span class="pill">${i+1}</span><button class="secondary" onclick="removeStudent(${i})">Eliminar</button></div>`).join("")
- : '<div class="empty">No hay alumnos.</div>';
-}
-function removeStudent(i){const ci=+document.getElementById("manageClass").value; if(confirm("Â¿Eliminar este alumno?")){data.classes[ci].students.splice(i,1);save();populate()}}
-function addStudent(){
- const ci=+document.getElementById("manageClass").value,n=document.getElementById("newStudent").value.trim();
- if(!n)return; if(!data.classes[ci].students.includes(n)) data.classes[ci].students.push(n);
- document.getElementById("newStudent").value="";save();populate();
-}
-function renderSummary(){
- const ci=+document.getElementById("summaryClass").value,c=data.classes[ci];
- const entries=Object.entries(data.records).filter(([k])=>k.endsWith("|"+ci));
- document.getElementById("daysCount").textContent=new Set(entries.map(([k])=>k.split("|")[0])).size;
- document.getElementById("studentsCount").textContent=c.students.length;
- let missing=0; const rows=c.students.map(n=>{
-   let yes=0,no=0,abs=0; entries.forEach(([,r])=>{if(r[n]==="yes")yes++;if(r[n]==="no"){no++;missing++}if(r[n]==="abs")abs++});
-   const total=yes+no; const pct=total?Math.round(yes/total*100):0;
-   return `<div class="student"><div><div class="name">${esc(n)}</div><small>${yes} con flauta Â· ${no} sin Â· ${abs} ausencias</small></div><span class="pill">${pct}%</span></div>`
- });
- document.getElementById("missingCount").textContent=missing;
- document.getElementById("summaryList").innerHTML=rows.join("")||'<div class="empty">No hay alumnos.</div>';
-}
-document.getElementById("classSelect").onchange=renderStudents;
-document.getElementById("date").onchange=renderStudents;
-document.getElementById("manageClass").onchange=renderManage;
-document.getElementById("summaryClass").onchange=renderSummary;
+
+populateClassSelects();
+renderStudents();
+renderStudentsEditor();
+renderSummary();
+updateSchedule();
 setInterval(updateSchedule,60000);
-document.getElementById("addStudent").onclick=addStudent;
-document.querySelectorAll(".tab").forEach(b=>b.onclick=()=>{document.querySelectorAll(".tab").forEach(x=>x.classList.remove("active"));b.classList.add("active");["registro","alumnos","resumen"].forEach(x=>document.getElementById(x).classList.toggle("hidden",x!==b.dataset.tab)); if(b.dataset.tab==="resumen")renderSummary()});
-
-document.getElementById("importBtn").onclick=()=>document.getElementById("fileInput").click();
-document.getElementById("fileInput").onchange=async e=>{
- const f=e.target.files[0]; if(!f)return; const txt=await f.text();
- const lines=txt.replace(/^\uFEFF/,"").split(/\r?\n/).filter(Boolean);
- const sep=lines[0].includes(";")?";":",";
- const start=/clase/i.test(lines[0])&&/alumno|nombre/i.test(lines[0])?1:0;
- for(let j=start;j<lines.length;j++){
-   const parts=lines[j].split(sep).map(x=>x.trim().replace(/^"|"$/g,""));
-   if(parts.length<2)continue;
-   const cls=parts[0],name=parts[1]; let ci=data.classes.findIndex(c=>c.name.toLowerCase()===cls.toLowerCase());
-   if(ci<0 && /^clase\s*[1-9]$/i.test(cls)) ci=parseInt(cls.match(/\d+/)[0],10)-1;
-   if(ci>=0&&ci<9&&name&&!data.classes[ci].students.includes(name))data.classes[ci].students.push(name);
- }
- save();populate();e.target.value="";alert("Alumnos importados.");
-};
-document.getElementById("downloadTemplate").onclick=()=>{
- const csv="Clase,Alumno\nClase 1,Ana GarcÃ­a\nClase 1,Pablo LÃ³pez\nClase 2,LucÃ­a MartÃ­n\n";
- const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([csv],{type:"text/csv"}));a.download="plantilla_alumnos.csv";a.click();
-};
-document.getElementById("exportBtn").onclick=()=>{
- let out="Fecha,Clase,Alumno,Estado\n";
- Object.entries(data.records).forEach(([k,r])=>{const [date,ci]=k.split("|");Object.entries(r).forEach(([n,v])=>{if(v)out+=`${date},"${data.classes[ci].name.replace(/"/g,'""')}","${n.replace(/"/g,'""')}",${v}\n`})});
- const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([out],{type:"text/csv;charset=utf-8"}));a.download="registro_flauta.csv";a.click();
-};
-populate();
 </script>
-</body></html>
+
+</body>
+</html>
