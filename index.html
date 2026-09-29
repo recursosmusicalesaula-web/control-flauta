@@ -8,8 +8,12 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <title>Control de Flauta</title>
 <link rel="manifest" href="manifest.json">
+
 <style>
-:root{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#172033;background:#f4f6fb}
+:root{
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  color:#172033;background:#f4f6fb
+}
 *{box-sizing:border-box}
 body{margin:0;background:#f4f6fb}
 header{background:#3157d5;color:white;padding:18px 16px 14px}
@@ -21,8 +25,9 @@ header p{margin:4px 0 0;opacity:.85;font-size:13px}
 main{padding:14px;max-width:800px;margin:auto}
 .card{background:white;border-radius:16px;padding:16px;margin-bottom:14px;box-shadow:0 2px 10px #0000000d}
 label{display:block;font-size:13px;font-weight:700;margin-bottom:6px;color:#4a5568}
-select,input,button{font:inherit}
-select,input{width:100%;border:1px solid #ccd2df;border-radius:10px;padding:11px;background:white}
+select,input,textarea,button{font:inherit}
+select,input,textarea{width:100%;border:1px solid #ccd2df;border-radius:10px;padding:11px;background:white}
+textarea{min-height:180px;resize:vertical}
 .schedule-pill{margin:0 0 12px;padding:10px 12px;background:#eef1f7;color:#33405a;border-radius:12px;font-size:13px;font-weight:600;text-align:center}
 .students{display:flex;flex-direction:column;gap:8px}
 .student-toggle{width:100%;border:1px solid #d7dce7;border-radius:12px;padding:13px 12px;background:#fff;text-align:left;display:flex;align-items:center;justify-content:space-between;gap:10px}
@@ -32,8 +37,8 @@ select,input{width:100%;border:1px solid #ccd2df;border-radius:10px;padding:11px
 .student-toggle.no{background:#fdeaea;border-color:#e58b8b;color:#a52222}
 .student-toggle.abs{background:#f0f1f3;border-color:#c4c7cc;color:#62666d}
 .empty{text-align:center;color:#697386;padding:28px 10px}
-.actions{display:flex;gap:8px;margin-top:12px}
-.actions button{flex:1;border:0;border-radius:10px;padding:11px;font-weight:700}
+.actions{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
+.actions button{flex:1;border:0;border-radius:10px;padding:11px;font-weight:700;min-width:140px}
 .primary{background:#3157d5;color:white}
 .secondary{background:#eef1f7;color:#33405a}
 .small{font-size:12px;color:#697386}
@@ -46,18 +51,21 @@ select,input{width:100%;border:1px solid #ccd2df;border-radius:10px;padding:11px
 .badge.yes{background:#e7f7ed;color:#176b35}
 .badge.no{background:#fdeaea;color:#a52222}
 .badge.abs{background:#f0f1f3;color:#62666d}
+.notice{padding:11px 12px;background:#fff8df;border-radius:10px;color:#665400;font-size:13px;margin-top:10px}
 .hidden{display:none!important}
+
 @media(max-width:600px){
-main{padding:12px}
-.card{padding:14px}
-.student-toggle{padding:13px 12px}
-.student-toggle .name{font-size:15px}
-header{padding:16px 14px}
-.tabs{gap:6px}
-.tab{padding:10px 8px}
+  main{padding:12px}
+  .card{padding:14px}
+  .student-toggle{padding:13px 12px}
+  .student-toggle .name{font-size:15px}
+  header{padding:16px 14px}
+  .tabs{gap:6px}
+  .tab{padding:10px 8px}
 }
 </style>
 </head>
+
 <body>
 
 <header>
@@ -74,6 +82,7 @@ header{padding:16px 14px}
 <main>
 
 <section id="registro">
+
 <div class="card">
 <div id="nextClass" class="schedule-pill">Horario: comprobando…</div>
 
@@ -92,12 +101,19 @@ header{padding:16px 14px}
 <div class="card">
 <div id="studentList" class="students"></div>
 </div>
+
 </section>
 
+
 <section id="alumnos" class="hidden">
+
 <div class="card">
+
 <h2 style="margin-top:0">Alumnos</h2>
-<p class="small">Selecciona una clase y añade los nombres de sus alumnos.</p>
+
+<p class="small">
+Selecciona una clase y añade los nombres de sus alumnos.
+</p>
 
 <label>Clase</label>
 <select id="classSelectStudents"></select>
@@ -108,26 +124,95 @@ header{padding:16px 14px}
 <button class="primary" id="addStudent">Añadir alumno</button>
 <button class="secondary" id="saveStudents">Guardar alumnos</button>
 </div>
+
 </div>
+
+
+<div class="card">
+
+<h2 style="margin-top:0">📋 Importar lista</h2>
+
+<p class="small">
+Puedes pegar aquí una lista completa. Pon un alumno por línea.
+</p>
+
+<textarea id="importList" placeholder="Ana García
+Pablo López
+María Sánchez
+Juan Pérez"></textarea>
+
+<div class="actions">
+<button class="primary" id="importStudents">Importar lista</button>
+</div>
+
+<div class="notice">
+Los alumnos se añadirán a la clase seleccionada. Los que ya estén no se duplicarán.
+</div>
+
+</div>
+
+
+<div class="card">
+
+<h2 style="margin-top:0">💾 Copia de seguridad</h2>
+
+<p class="small">
+Puedes guardar todos los alumnos y registros en un archivo y después llevarlo al iPad.
+</p>
+
+<div class="actions">
+<button class="primary" id="exportData">Exportar datos</button>
+<button class="secondary" id="importDataBtn">Importar datos</button>
+</div>
+
+<input id="importDataFile" type="file" accept=".json,application/json" class="hidden">
+
+<div class="notice">
+La información se guarda actualmente en este dispositivo. La copia de seguridad permite trasladarla a otro dispositivo.
+</div>
+
+</div>
+
 </section>
 
+
 <section id="resumen" class="hidden">
+
 <div class="card">
+
 <h2 style="margin-top:0">Resumen</h2>
+
 <label>Clase</label>
 <select id="summaryClass"></select>
+
 <div id="summaryContent" style="margin-top:12px"></div>
+
 </div>
+
 </section>
 
 </main>
 
+
 <script>
-const CLASS_NAMES=["1 A","1 B","1 C","1 D","2 A","2 B","2 C","2 D","4 D"];
-const OLD_NAMES=["1º ESO A","1º ESO B","1º ESO C","1º ESO D","2º ESO A","2º ESO B","2º ESO C","2º ESO D","4º ESO D"];
+
+const CLASS_NAMES=[
+"1 A","1 B","1 C","1 D",
+"2 A","2 B","2 C","2 D",
+"4 D"
+];
+
+const OLD_NAMES=[
+"1º ESO A","1º ESO B","1º ESO C","1º ESO D",
+"2º ESO A","2º ESO B","2º ESO C","2º ESO D",
+"4º ESO D"
+];
 
 const defaultData={
-classes:CLASS_NAMES.map(name=>({name,students:[]})),
+classes:CLASS_NAMES.map(name=>({
+name,
+students:[]
+})),
 records:{}
 };
 
@@ -137,11 +222,15 @@ let data=JSON.parse(localStorage.getItem(KEY)||"null")||defaultData;
 
 if(data.classes?.length===9){
 data.classes.forEach((c,i)=>{
-if(OLD_NAMES.includes(c.name)) c.name=CLASS_NAMES[i];
+if(OLD_NAMES.includes(c.name)){
+c.name=CLASS_NAMES[i];
+}
 });
 }
 
-const save=()=>localStorage.setItem(KEY,JSON.stringify(data));
+const save=()=>{
+localStorage.setItem(KEY,JSON.stringify(data));
+};
 
 const today=()=>{
 const d=new Date();
@@ -154,201 +243,531 @@ const studentList=document.getElementById("studentList");
 
 dateInput.value=today();
 
+
 function populateClassSelects(){
-[classSelect,document.getElementById("classSelectStudents"),document.getElementById("summaryClass")].forEach(sel=>{
+
+[
+classSelect,
+document.getElementById("classSelectStudents"),
+document.getElementById("summaryClass")
+].forEach(sel=>{
+
 sel.innerHTML="";
+
 data.classes.forEach((c,i)=>{
+
 const opt=document.createElement("option");
+
 opt.value=i;
 opt.textContent=c.name;
+
 sel.appendChild(opt);
+
 });
+
 });
+
 }
 
+
 function renderStudents(){
+
 const ci=Number(classSelect.value||0);
+
 const students=data.classes[ci]?.students||[];
+
 const date=dateInput.value;
+
 const rec=data.records[date]?.[ci]||{};
 
 studentList.innerHTML="";
 
 if(!students.length){
-studentList.innerHTML='<div class="empty">Aún no hay alumnos en esta clase. Ve a Alumnos para importarlos.</div>';
+
+studentList.innerHTML=
+'<div class="empty">Aún no hay alumnos en esta clase. Ve a Alumnos para añadirlos.</div>';
+
 return;
+
 }
 
 students.forEach((name,i)=>{
+
 const state=rec[i]||"";
 
 const btn=document.createElement("button");
+
 btn.className="student-toggle "+(state||"");
+
 btn.onclick=()=>toggleMark(i);
 
 let label="○ Sin registrar";
+
 if(state==="yes") label="🎵 Trae";
 if(state==="no") label="❌ No trae";
 if(state==="abs") label="— Ausente";
 
-btn.innerHTML=`<span class="name">${escapeHtml(name)}</span><span class="state">${label}</span>`;
+btn.innerHTML=
+`<span class="name">${escapeHtml(name)}</span>
+<span class="state">${label}</span>`;
 
 studentList.appendChild(btn);
+
 });
+
 }
 
+
 function escapeHtml(text){
+
 return String(text).replace(/[&<>"']/g,m=>({
+
 "&":"&amp;",
 "<":"&lt;",
 ">":"&gt;",
 '"':"&quot;",
 "'":"&#039;"
+
 }[m]));
+
 }
 
+
 function toggleMark(i){
+
 const ci=Number(classSelect.value||0);
 const date=dateInput.value;
 
-if(!data.records[date]) data.records[date]={};
-if(!data.records[date][ci]) data.records[date][ci]={};
+if(!data.records[date]){
+data.records[date]={};
+}
+
+if(!data.records[date][ci]){
+data.records[date][ci]={};
+}
 
 const current=data.records[date][ci][i]||"";
 
-const next=current===""?"yes":
+const next=
+current===""?"yes":
 current==="yes"?"no":
 current==="no"?"abs":"";
 
 data.records[date][ci][i]=next;
+
 save();
+
 renderStudents();
+
 }
+
 
 document.getElementById("saveBtn").onclick=()=>{
 save();
 alert("Registro guardado");
 };
 
+
 document.getElementById("clearBtn").onclick=()=>{
+
 const ci=Number(classSelect.value||0);
 const date=dateInput.value;
 
 if(data.records[date]?.[ci]){
+
 delete data.records[date][ci];
+
 save();
+
 }
 
 renderStudents();
+
 };
+
 
 classSelect.onchange=renderStudents;
 dateInput.onchange=renderStudents;
 
+
 function renderStudentsEditor(){
-const ci=Number(document.getElementById("classSelectStudents").value||0);
+
+const ci=Number(
+document.getElementById("classSelectStudents").value||0
+);
+
 const box=document.getElementById("studentsEditor");
+
 box.innerHTML="";
 
 data.classes[ci].students.forEach((name,i)=>{
+
 const row=document.createElement("div");
+
 row.className="student-row";
 
 const input=document.createElement("input");
+
 input.value=name;
 input.placeholder="Nombre del alumno";
 
 const del=document.createElement("button");
+
 del.className="danger";
 del.textContent="×";
+
 del.onclick=()=>{
+
 data.classes[ci].students.splice(i,1);
+
 renderStudentsEditor();
+
 };
 
 row.appendChild(input);
 row.appendChild(del);
+
 box.appendChild(row);
+
 });
+
 }
 
-document.getElementById("classSelectStudents").onchange=renderStudentsEditor;
+
+document.getElementById("classSelectStudents").onchange=
+renderStudentsEditor;
+
 
 document.getElementById("addStudent").onclick=()=>{
-const ci=Number(document.getElementById("classSelectStudents").value||0);
+
+const ci=Number(
+document.getElementById("classSelectStudents").value||0
+);
+
 data.classes[ci].students.push("");
+
 renderStudentsEditor();
+
 };
+
 
 document.getElementById("saveStudents").onclick=()=>{
-const ci=Number(document.getElementById("classSelectStudents").value||0);
-const inputs=document.querySelectorAll("#studentsEditor input");
-data.classes[ci].students=[...inputs].map(x=>x.value.trim()).filter(Boolean);
+
+const ci=Number(
+document.getElementById("classSelectStudents").value||0
+);
+
+const inputs=document.querySelectorAll(
+"#studentsEditor input"
+);
+
+data.classes[ci].students=
+[...inputs]
+.map(x=>x.value.trim())
+.filter(Boolean);
+
 save();
+
 renderStudentsEditor();
 renderStudents();
+
 alert("Alumnos guardados");
+
 };
 
-document.getElementById("summaryClass").onchange=renderSummary;
+
+/* IMPORTAR LISTA DE ALUMNOS */
+
+document.getElementById("importStudents").onclick=()=>{
+
+const ci=Number(
+document.getElementById("classSelectStudents").value||0
+);
+
+const textarea=document.getElementById("importList");
+
+const text=textarea.value.trim();
+
+if(!text){
+
+alert("Pega primero la lista de alumnos.");
+
+return;
+
+}
+
+const names=text
+.split(/\r?\n/)
+.map(x=>x.trim())
+.filter(Boolean);
+
+let added=0;
+
+names.forEach(name=>{
+
+const exists=data.classes[ci].students.some(
+x=>x.toLowerCase()===name.toLowerCase()
+);
+
+if(!exists){
+
+data.classes[ci].students.push(name);
+
+added++;
+
+}
+
+});
+
+save();
+
+textarea.value="";
+
+renderStudentsEditor();
+renderStudents();
+
+alert(
+"Lista importada.\n\n"+
+"Alumnos añadidos: "+added+
+"\nAlumnos ya existentes: "+(names.length-added)
+);
+
+};
+
+
+/* EXPORTAR DATOS */
+
+document.getElementById("exportData").onclick=()=>{
+
+save();
+
+const json=JSON.stringify(data,null,2);
+
+const blob=new Blob(
+[json],
+{type:"application/json"}
+);
+
+const url=URL.createObjectURL(blob);
+
+const a=document.createElement("a");
+
+a.href=url;
+
+const fecha=today();
+
+a.download="control-flauta-"+fecha+".json";
+
+document.body.appendChild(a);
+
+a.click();
+
+a.remove();
+
+URL.revokeObjectURL(url);
+
+};
+
+
+/* IMPORTAR COPIA DE SEGURIDAD */
+
+const importDataFile=
+document.getElementById("importDataFile");
+
+document.getElementById("importDataBtn").onclick=()=>{
+importDataFile.click();
+};
+
+
+importDataFile.onchange=(event)=>{
+
+const file=event.target.files[0];
+
+if(!file)return;
+
+const reader=new FileReader();
+
+reader.onload=()=>{
+
+try{
+
+const imported=JSON.parse(reader.result);
+
+if(
+!imported ||
+!Array.isArray(imported.classes) ||
+!imported.records
+){
+
+throw new Error("Formato no válido");
+
+}
+
+if(!confirm(
+"Esto sustituirá los datos actuales por los de la copia.\n\n¿Continuar?"
+)){
+
+importDataFile.value="";
+return;
+
+}
+
+data=imported;
+
+save();
+
+populateClassSelects();
+
+renderStudents();
+
+renderStudentsEditor();
+
+renderSummary();
+
+alert("Datos importados correctamente.");
+
+}catch(error){
+
+alert(
+"No se ha podido importar la copia.\n\n"+
+"Comprueba que sea un archivo de Control de Flauta."
+);
+
+}
+
+importDataFile.value="";
+
+};
+
+reader.readAsText(file);
+
+};
+
+
+/* RESUMEN */
+
+document.getElementById("summaryClass").onchange=
+renderSummary;
+
 
 function renderSummary(){
-const ci=Number(document.getElementById("summaryClass").value||0);
+
+const ci=Number(
+document.getElementById("summaryClass").value||0
+);
+
 const box=document.getElementById("summaryContent");
+
 const students=data.classes[ci]?.students||[];
 
 let yes=0,no=0,abs=0,un=0;
 
 const date=dateInput.value;
+
 const rec=data.records[date]?.[ci]||{};
 
 students.forEach((_,i)=>{
+
 if(rec[i]==="yes")yes++;
 else if(rec[i]==="no")no++;
 else if(rec[i]==="abs")abs++;
 else un++;
+
 });
 
 box.innerHTML=`
-<div class="summary-row"><span>🎵 Trae</span><span class="badge yes">${yes}</span></div>
-<div class="summary-row"><span>❌ No trae</span><span class="badge no">${no}</span></div>
-<div class="summary-row"><span>— Ausente</span><span class="badge abs">${abs}</span></div>
-<div class="summary-row"><span>○ Sin registrar</span><span>${un}</span></div>
+
+<div class="summary-row">
+<span>🎵 Trae</span>
+<span class="badge yes">${yes}</span>
+</div>
+
+<div class="summary-row">
+<span>❌ No trae</span>
+<span class="badge no">${no}</span>
+</div>
+
+<div class="summary-row">
+<span>— Ausente</span>
+<span class="badge abs">${abs}</span>
+</div>
+
+<div class="summary-row">
+<span>○ Sin registrar</span>
+<span>${un}</span>
+</div>
+
 `;
+
 }
 
+
+/* PESTAÑAS */
+
 document.querySelectorAll(".tab").forEach(tab=>{
+
 tab.onclick=()=>{
-document.querySelectorAll(".tab").forEach(t=>t.classList.remove("active"));
+
+document.querySelectorAll(".tab")
+.forEach(t=>t.classList.remove("active"));
+
 tab.classList.add("active");
 
-document.getElementById("registro").classList.toggle("hidden",tab.dataset.tab!=="registro");
-document.getElementById("alumnos").classList.toggle("hidden",tab.dataset.tab!=="alumnos");
-document.getElementById("resumen").classList.toggle("hidden",tab.dataset.tab!=="resumen");
+document.getElementById("registro")
+.classList.toggle(
+"hidden",
+tab.dataset.tab!=="registro"
+);
 
-if(tab.dataset.tab==="alumnos") renderStudentsEditor();
-if(tab.dataset.tab==="resumen") renderSummary();
+document.getElementById("alumnos")
+.classList.toggle(
+"hidden",
+tab.dataset.tab!=="alumnos"
+);
+
+document.getElementById("resumen")
+.classList.toggle(
+"hidden",
+tab.dataset.tab!=="resumen"
+);
+
+if(tab.dataset.tab==="alumnos"){
+renderStudentsEditor();
+}
+
+if(tab.dataset.tab==="resumen"){
+renderSummary();
+}
+
 };
+
 });
 
+
+/* HORARIO */
+
 const timetable={
+
 1:[
 ["09:15","10:15","2 D"],
 ["10:15","11:15","1 C"],
 ["11:45","12:45","4 D"],
 ["13:45","14:45","1 B"]
 ],
+
 2:[
 ["09:15","10:15","1 A"],
 ["10:15","11:15","4 D"],
 ["12:45","13:45","2 A"],
 ["13:45","14:45","2 C"]
 ],
+
 3:[
 ["10:15","11:15","1 D"],
 ["11:45","12:45","2 B"],
 ["13:45","14:45","1 C"]
 ],
+
 4:[
 ["09:15","10:15","4 D"],
 ["10:15","11:15","1 A"],
@@ -356,62 +775,112 @@ const timetable={
 ["12:45","13:45","2 C"],
 ["13:45","14:45","1 B"]
 ],
+
 5:[
 ["11:45","12:45","2 B"],
 ["12:45","13:45","2 A"],
 ["13:45","14:45","1 D"]
 ]
+
 };
 
+
 function updateSchedule(){
+
 const el=document.getElementById("nextClass");
+
 if(!el)return;
 
 const now=new Date();
+
 const day=now.getDay();
+
 const list=timetable[day]||[];
 
 if(!list.length){
+
 el.textContent="Hoy no hay clases";
+
 return;
+
 }
 
-const mins=now.getHours()*60+now.getMinutes();
+const mins=
+now.getHours()*60+
+now.getMinutes();
 
 let current=null;
 let next=null;
 
 for(const item of list){
+
 const [sh,sm]=item[0].split(":").map(Number);
 const [eh,em]=item[1].split(":").map(Number);
+
 const start=sh*60+sm;
 const end=eh*60+em;
 
-if(mins>=start&&mins<end) current=item;
-else if(mins<start&&!next) next=item;
+if(mins>=start&&mins<end){
+
+current=item;
+
+}else if(mins<start&&!next){
+
+next=item;
+
+}
+
 }
 
 if(current){
-el.textContent=`Ahora: ${current[2]} · ${current[0]}–${current[1]}`;
 
-const idx=data.classes.findIndex(c=>c.name===current[2]);
-if(idx>=0&&classSelect.value!==String(idx)){
+el.textContent=
+`Ahora: ${current[2]} · ${current[0]}–${current[1]}`;
+
+const idx=
+data.classes.findIndex(
+c=>c.name===current[2]
+);
+
+if(
+idx>=0 &&
+classSelect.value!==String(idx)
+){
+
 classSelect.value=String(idx);
+
 renderStudents();
+
 }
+
 }else if(next){
-el.textContent=`Próxima: ${next[2]} · ${next[0]}–${next[1]}`;
+
+el.textContent=
+`Próxima: ${next[2]} · ${next[0]}–${next[1]}`;
+
 }else{
+
 el.textContent="Clases de hoy terminadas";
+
 }
+
 }
+
+
+/* INICIO */
 
 populateClassSelects();
+
 renderStudents();
+
 renderStudentsEditor();
+
 renderSummary();
+
 updateSchedule();
+
 setInterval(updateSchedule,60000);
+
 </script>
 
 </body>
